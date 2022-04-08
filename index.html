@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        #container {
+            box-sizing: border-box;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        #input-container > textarea {
+            box-sizing: border-box;
+            width: 100%;
+            margin: 1rem 0;
+        }
+    </style>
+    <title>GitHubCodeBlock</title>
+</head>
+<body>
+<div id="container">
+    <div id="input-container">
+        <label for="code-input">GitHub Code Block</label>
+        <textarea id="code-input">
+    </textarea>
+    </div>
+    <div id="code-block"></div>
+</div>
+<script type="module">
+    window.loadCss = (url) => {
+        return new Promise((resolve, reject) => {
+            const linkRef = document.createElement('link')
+            linkRef.rel = 'stylesheet'
+            linkRef.href = url
+            linkRef.addEventListener('load', (ev) => {
+                resolve(ev)
+            })
+            linkRef.addEventListener('error', (err) => {
+                reject(err)
+            })
+            document.head.appendChild(linkRef)
+        })
+    }
+
+    window.loadJs = (url, module = false) => {
+        return new Promise((resolve, reject) => {
+            const scriptRef = document.createElement('script')
+            scriptRef.src = url
+            if (module) {
+                scriptRef.type = 'module'
+            }
+            scriptRef.addEventListener('load', (ev) => {
+                resolve(ev)
+            })
+            scriptRef.addEventListener('error', (err) => {
+                reject(err)
+            })
+            document.body.appendChild(scriptRef)
+        })
+    }
+
+    if (location.hostname === 'localhost') {
+        await loadJs(new URL('./main.js', import.meta.url), true)
+    } else {
+        await loadJs(new URL('./sample.js', import.meta.url), true)
+    }
+</script>
+</body>
+</html>
